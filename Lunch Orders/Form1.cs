@@ -33,7 +33,7 @@ namespace Lunch_Orders
                 chk2.Checked = false;
                 chk3.Checked = false;
                 chk1.Visible = true;
-                chk2.Visible = true;
+                chk2.Visible = true; 
                 chk3.Visible = true;
             }
             else if (rdoPizza.Checked) //display Add-ons for pizza 

@@ -82,7 +82,7 @@ namespace Lunch_Orders
             
             Decimal orderTotal = CalculateOrderTotal(orderString);//find our total for this order
             ordersSubtotal = ordersSubtotal+orderTotal;//all orders placed so far
-            orderString = orderString + " " + orderTotal;//add total for this order to the end of the order string
+            orderString = orderString + "; " + orderTotal;//add total for this order to the end of the order string
             orders.Add(orderString);//keep order strings in a list so the order can be edited
 
             displayOrders();
@@ -112,6 +112,7 @@ namespace Lunch_Orders
             txtSubtotal.Clear();
             txtTax.Clear();
             txtTotal.Clear();
+            rdoHamburger.Checked = true;
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -128,6 +129,29 @@ namespace Lunch_Orders
             txtSubtotal.Text = ordersSubtotal.ToString("c");//display subtotal
             txtTax.Text = (ordersSubtotal * .0775m).ToString("c");//display tax
             txtTotal.Text = (ordersSubtotal + (ordersSubtotal * .0775m)).ToString("c");
+            rdoHamburger.Checked = true;
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {//index refers to the index of the item that will be removed
+
+            try
+            {
+                int index = lstOrders.SelectedIndex;
+                
+                String order = orders[index];
+                String[] orderArray = order.Split(';');//turn string into an array so order total is accessible
+
+                decimal orderTotal = Convert.ToDecimal((orderArray[orderArray.Length - 1]).Trim());//get order total, trim whitespace, and make into a number
+
+                ordersSubtotal = ordersSubtotal - orderTotal;//deduct orderTotal from subtotal
+                orders.Remove(order);//remove orderstring from orders List
+                displayOrders();//clear and repopulate list box and subtotal, tax, and total boxes
+            }
+            catch (ArgumentOutOfRangeException)//incase the delete button is clicked without selecting an item
+            {
+                MessageBox.Show("To Delete an Item from your order, first select it and then click the Delete button", "Selection Error");
+            }
         }
     }
 }
